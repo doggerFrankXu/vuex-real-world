@@ -1,14 +1,11 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <explore :value="inputValue" :on-change="handleChange" ></explore>
     <router-view></router-view>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'app'
-}
+<script src="./App">
 </script>
 
 <style>
