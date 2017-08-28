@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script src="./App">
+<script src="./App.js">
 </script>
 
 <style>

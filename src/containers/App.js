@@ -1,4 +1,4 @@
-import Explore from './components/Explore.vue'
+import Explore from '@/components/Explore.vue'
 export default {
   name: 'app',
   components: { Explore },
