@@ -16,13 +16,13 @@ const callApi = (endPoint, schema) => {
     )
 }
 
-// Action name and attribute key that carries API call info interpreted by this Vuex action.
+// Attribute key that carries API call info interpreted by this Vuex action.
 export const CALL_API = 'Call API'
 
 // A Vuex action that interprets actions with CALL_API info specified.
 // Performs the call and promises when such actions are dispatched.
-export const CALL_API_ACTION = ({state, commit}, action) => {
-  const callAPI = action[CALL_API]
+export const api = ({state, commit}, payload) => {
+  const callAPI = payload[CALL_API]
   if (typeof callAPI === 'undefined') {
     return
   }
@@ -48,7 +48,7 @@ export const CALL_API_ACTION = ({state, commit}, action) => {
   }
 
   const mutationWith = data => {
-    const finalMutation = Object.assign({}, action, data)
+    const finalMutation = Object.assign({}, payload, data)
     delete finalMutation[CALL_API]
     return finalMutation
   }
