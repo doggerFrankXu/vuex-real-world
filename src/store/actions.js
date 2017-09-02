@@ -1,4 +1,4 @@
-import { CALL_API, api } from './api'
+import { CALL_API, api, Schemas } from './api'
 
 export const USER_REQUEST = 'USER_REQUEST'
 export const USER_SUCCESS = 'USER_SUCCESS'
@@ -9,7 +9,8 @@ export const USER_FAILURE = 'USER_FAILURE'
 const fetchUser = login => ({
   [CALL_API]: {
     types: [USER_REQUEST, USER_SUCCESS, USER_FAILURE],
-    endpoint: `users/${login}`
+    endpoint: `users/${login}`,
+    schema: Schemas.USER
   }
 })
 
