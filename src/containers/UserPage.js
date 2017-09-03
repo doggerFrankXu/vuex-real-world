@@ -37,15 +37,25 @@ export default {
       // loadStarred(login)
 
       loadUser(login)
+    },
+    handleLoadMoreClick () {
+
     }
   },
   data () {
     return {
-      repos: [{
-        name: 'a'
-      }, {
-        name: 'b'
-      }]
+      repos: [
+        {
+          'repo': {
+          },
+          'id': 148211,
+          'name': 'nauczyciel',
+          'full_name': 'jaceklaskowski/nauczyciel',
+          'owner': {
+            'login': 'jaceklaskowski'
+          }
+        }
+      ]
     }
   }
 }

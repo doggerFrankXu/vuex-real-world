@@ -8,9 +8,14 @@
     <template v-else>
       <user :user="user" />
       <hr />
-      <list :items="repos">
+      <list :items="repos"
+        :on-load-more-click="handleLoadMoreClick"
+        :loading-label="`Loading ${login}'s starred...'`"
+        :is-fetching="true"
+        >
         <template slot="item" scope="props">
-          <repo :owner="props.itemProps.name" />
+          <repo :owner="props.itemProps.owner"
+            :repo="props.itemProps.repo" />
         </template>
       </list>
     </template>
