@@ -1,4 +1,4 @@
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import User from '@/components/User.vue'
 import List from '@/components/List.vue'
 import Repo from '@/components/Repo.vue'
@@ -11,6 +11,24 @@ export default {
     Repo
   },
   computed: {
+    ...mapState({
+      starredRepos (state) {
+        const {
+          [this.login]: {
+            ids = []
+          } = {}
+        } = state.pagination.starredByUser
+        return ids
+      },
+      isFetching (state) {
+        const {
+          [this.login]: {
+            isFetching = false
+          } = {}
+        } = state.pagination.starredByUser
+        return isFetching
+      }
+    }),
     user () {
       return this.$store.getters.user(this.login)
     },
@@ -37,25 +55,10 @@ export default {
       // loadStarred(login)
 
       loadUser(login)
+      loadStarred([login])
     },
     handleLoadMoreClick () {
 
-    }
-  },
-  data () {
-    return {
-      repos: [
-        {
-          'repo': {
-          },
-          'id': 148211,
-          'name': 'nauczyciel',
-          'full_name': 'jaceklaskowski/nauczyciel',
-          'owner': {
-            'login': 'jaceklaskowski'
-          }
-        }
-      ]
     }
   }
 }

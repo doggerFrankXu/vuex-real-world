@@ -23,4 +23,29 @@ export const loadUser = (store, login) => {
   return api(store, fetchUser(login))
 }
 
-export const loadStarred = () => {}
+// Fetches a page of starred repos by a particular user.
+// Relies on the custom API action 'interpreter' defined in ./api.js.
+const fetchStarred = (login, nextPageUrl) => ({
+  login,
+  [CALL_API]: {
+    types: [ types.STARRED_REQUEST, types.STARRED_SUCCESS, types.STARRED_FAILURE ],
+    endpoint: nextPageUrl,
+    schema: Schemas.REPO_ARRAY
+  }
+})
+
+// Fetches a page of starred repos by a particular user.
+// Bails out if page is cached and user didn't specifically request next page.
+// Relies on the custom API action 'interpreter' defined in ./api.js.
+export const loadStarred = (store, [login, nextPage]) => {
+  const {
+    nextPageUrl = `users/${login}/starred`,
+    pageCount = 0
+  } = store.state.pagination.starredByUser[login] || {}
+
+  if (pageCount > 0 && !nextPage) {
+    return null
+  }
+
+  return api(store, fetchStarred(login, nextPageUrl))
+}

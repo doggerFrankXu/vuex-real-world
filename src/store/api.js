@@ -3,6 +3,21 @@ import { camelizeKeys } from 'humps'
 
 const API_ROOT = 'https://api.github.com/'
 
+// Extracts the next page URL from Github API response.
+const getNextPageUrl = response => {
+  const link = response.headers.get('link')
+  if (!link) {
+    return null
+  }
+
+  const nextLink = link.split(',').find(s => s.indexOf('rel="next"') > -1)
+  if (!nextLink) {
+    return null
+  }
+
+  return nextLink.split(';')[0].slice(1, -1)
+}
+
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 const callApi = (endPoint, schema) => {
@@ -16,10 +31,11 @@ const callApi = (endPoint, schema) => {
           }
 
           const camelizedJson = camelizeKeys(json)
+          const nextPageUrl = getNextPageUrl(response)
 
-          // return normalize(camelizedJson, schema)
           return Object.assign({},
-            normalize(camelizedJson, schema)
+            normalize(camelizedJson, schema),
+            { nextPageUrl }
           )
         })
     )
@@ -42,10 +58,18 @@ const userSchema = new schema.Entity('users', {}, {
   idAttribute: user => user.login.toLowerCase()
 })
 
-// Schemas for Github API response
+const repoSchema = new schema.Entity('repos', {
+  owner: userSchema
+}, {
+  idAttribute: repo => repo.fullName.toLowerCase()
+})
+
+// Schemas for Github API responses.
 export const Schemas = {
   USER: userSchema,
-  USER_ARRAY: [userSchema]
+  USER_ARRAY: [userSchema],
+  REPO: repoSchema,
+  REPO_ARRAY: [repoSchema]
 }
 
 // Attribute key that carries API call info interpreted by this Vuex action.
