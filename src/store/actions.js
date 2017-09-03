@@ -1,14 +1,11 @@
 import { CALL_API, api, Schemas } from './api'
-
-export const USER_REQUEST = 'USER_REQUEST'
-export const USER_SUCCESS = 'USER_SUCCESS'
-export const USER_FAILURE = 'USER_FAILURE'
+import * as types from './mutation-types'
 
 // Fetches a single user from Github API.
 // Relies on the custom API action 'interpreter' defined in ./api.js.
 const fetchUser = login => ({
   [CALL_API]: {
-    types: [USER_REQUEST, USER_SUCCESS, USER_FAILURE],
+    types: [types.USER_REQUEST, types.USER_SUCCESS, types.USER_FAILURE],
     endpoint: `users/${login}`,
     schema: Schemas.USER
   }
