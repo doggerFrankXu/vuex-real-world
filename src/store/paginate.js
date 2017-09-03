@@ -1,4 +1,5 @@
 import union from 'lodash/union'
+import merge from 'lodash/merge'
 import fromPairs from 'lodash/fromPairs'
 import Vue from 'vue'
 const paginate = ({types, mapPayloadToKey}) => {
@@ -52,7 +53,10 @@ const paginate = ({types, mapPayloadToKey}) => {
       if (typeof key !== 'string') {
         throw new Error('Expected key to be a string.')
       }
-
+      // todo temp solution for repo entities
+      if (payload.response && payload.response.entities) {
+        state.entities = merge({}, state.entities, payload.response.entities)
+      }
       Vue.set(starredByUserState, key, updatePagination(starredByUserState[key], payload, type))
     }
   }
