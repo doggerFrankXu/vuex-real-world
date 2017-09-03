@@ -7,6 +7,12 @@
     </template>
     <template v-else>
       <user :user="user" />
+      <hr />
+      <list :items="repos">
+        <template slot="item" scope="props">
+          <repo :owner="props.itemProps.name" />
+        </template>
+      </list>
     </template>
   </div>
 </template>

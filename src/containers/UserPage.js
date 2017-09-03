@@ -1,10 +1,14 @@
 import { mapActions } from 'vuex'
 import User from '@/components/User.vue'
+import List from '@/components/List.vue'
+import Repo from '@/components/Repo.vue'
 
 export default {
   name: 'UserPage',
   components: {
-    User
+    User,
+    List,
+    Repo
   },
   computed: {
     user () {
@@ -33,6 +37,15 @@ export default {
       // loadStarred(login)
 
       loadUser(login)
+    }
+  },
+  data () {
+    return {
+      repos: [{
+        name: 'a'
+      }, {
+        name: 'b'
+      }]
     }
   }
 }
