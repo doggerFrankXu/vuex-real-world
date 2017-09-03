@@ -12,21 +12,8 @@ export default {
   },
   computed: {
     ...mapState({
-      starredRepos (state) {
-        const {
-          [this.login]: {
-            ids = []
-          } = {}
-        } = state.pagination.starredByUser
-        return ids
-      },
-      isFetching (state) {
-        const {
-          [this.login]: {
-            isFetching = false
-          } = {}
-        } = state.pagination.starredByUser
-        return isFetching
+      starredPagination (state) {
+        return state.pagination.starredByUser[this.login]
       }
     }),
     user () {
@@ -58,7 +45,7 @@ export default {
       loadStarred([login])
     },
     handleLoadMoreClick () {
-
+      this.loadStarred([this.login, true])
     }
   }
 }

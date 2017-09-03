@@ -8,10 +8,12 @@
     <template v-else>
       <user :user="user" />
       <hr />
-      <list :items="starredRepos"
+      <list :items="starredPagination.ids"
         :on-load-more-click="handleLoadMoreClick"
         :loading-label="`Loading ${login}'s starred...'`"
-        :is-fetching="isFetching"
+        :is-fetching="starredPagination.isFetching"
+        :page-count="starredPagination.pageCount"
+        :nextPageUrl="starredPagination.nextPageUrl"
         >
         <template slot="item" scope="props">
           <!-- <repo :owner="props.itemProps.owner"
