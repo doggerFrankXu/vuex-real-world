@@ -8,17 +8,16 @@
     <template v-else>
       <user :user="user" />
       <hr />
-      <list :items="starredPagination.ids"
+      <list :items="items"
         :on-load-more-click="handleLoadMoreClick"
         :loading-label="`Loading ${login}'s starred...'`"
         :is-fetching="starredPagination.isFetching"
         :page-count="starredPagination.pageCount"
         :nextPageUrl="starredPagination.nextPageUrl"
         >
-        <template slot="item" scope="props">
-          <!-- <repo :owner="props.itemProps.owner"
-            :repo="props.itemProps.repo" /> -->
-          <div>{{props.itemProps}}</div>
+        <template slot="item" scope="{itemProps:[repo, owner]}">
+          <repo :owner="owner"
+            :repo="repo" />
         </template>
       </list>
     </template>

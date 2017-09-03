@@ -2,6 +2,7 @@ import { mapActions, mapState } from 'vuex'
 import User from '@/components/User.vue'
 import List from '@/components/List.vue'
 import Repo from '@/components/Repo.vue'
+import zip from 'lodash/zip'
 
 export default {
   name: 'UserPage',
@@ -14,6 +15,15 @@ export default {
     ...mapState({
       starredPagination (state) {
         return state.pagination.starredByUser[this.login]
+      },
+      items (state) {
+        const {
+          entities: { users, repos }
+        } = state
+        const starredRepos = this.starredPagination.ids.map(id => repos[id])
+        const starredRepoOwners = starredRepos.map(repo => users[repo.owner])
+
+        return zip(starredRepos, starredRepoOwners)
       }
     }),
     user () {
