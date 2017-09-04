@@ -30,7 +30,7 @@ export default {
       return this.$store.getters.user(this.login)
     },
     login () {
-      return this.$route.params.login
+      return this.$route.params.login.toLowerCase()
     }
   },
   beforeRouteEnter (to, from, next) {
