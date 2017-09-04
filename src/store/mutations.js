@@ -8,9 +8,13 @@ export default {
       state.entities = merge({}, state.entities, payload.response.entities)
     }
   },
-  [types.USER_REQUEST] () {
-
+  [types.REPO_SUCCESS] (state, payload) {
+    if (payload.response && payload.response.entities) {
+      state.entities = merge({}, state.entities, payload.response.entities)
+    }
   },
+  [types.USER_REQUEST] () {},
+  [types.REPO_REQUEST] () {},
   ...paginate({
     mapPayloadToKey: payload => payload.login,
     types: [types.STARRED_REQUEST, types.STARRED_SUCCESS, types.STARRED_FAILURE]

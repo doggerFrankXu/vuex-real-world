@@ -23,6 +23,27 @@ export const loadUser = (store, login) => {
   return api(store, fetchUser(login))
 }
 
+// Fetches a single repository from Github API.
+// Relies on the custom API middleware defined in ../middleware/api.js.
+const fetchRepo = fullName => ({
+  [CALL_API]: {
+    types: [ types.REPO_REQUEST, types.REPO_SUCCESS, types.REPO_FAILURE ],
+    endpoint: `repos/${fullName}`,
+    schema: Schemas.REPO
+  }
+})
+
+// Fetches a single repository from Github API unless it is cached.
+// Relies on Redux Thunk middleware.
+export const loadRepo = (store, [fullName, requiredFields = []]) => {
+  const repo = store.state.entities.repos[fullName]
+  if (repo && requiredFields.every(key => repo.hasOwnProperty(key))) {
+    return null
+  }
+
+  return api(store, fetchRepo(fullName))
+}
+
 // Fetches a page of starred repos by a particular user.
 // Relies on the custom API action 'interpreter' defined in ./api.js.
 const fetchStarred = (login, nextPageUrl) => ({

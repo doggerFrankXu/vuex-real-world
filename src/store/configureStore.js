@@ -9,7 +9,8 @@ const debug = process.env.NODE_ENV !== 'production'
 
 const initState = {
   entities: {
-    users: {}
+    users: {},
+    repos: {}
   },
   pagination: {
     starredByUser: {}
