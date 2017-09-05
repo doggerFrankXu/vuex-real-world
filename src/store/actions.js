@@ -70,3 +70,30 @@ export const loadStarred = (store, [login, nextPage]) => {
 
   return api(store, fetchStarred(login, nextPageUrl))
 }
+
+// Fetches a page of stargazers for a particular repo.
+// Relies on the custom API action 'interpreter' defined in ./api.js.
+const fetchStargazers = (fullName, nextPageUrl) => ({
+  fullName,
+  [CALL_API]: {
+    types: [ types.STARGAZERS_REQUEST, types.STARGAZERS_SUCCESS, types.STARGAZERS_FAILURE ],
+    endpoint: nextPageUrl,
+    schema: Schemas.USER_ARRAY
+  }
+})
+
+// Fetches a page of stargazers for a particular repo.
+// Bails out if page is cached and user didn't specifically request next page.
+// Relies on the custom API action 'interpreter' defined in ./api.js.
+export const loadStargazers = (store, [fullName, nextPage]) => {
+  const {
+    nextPageUrl = `repos/${fullName}/stargazers`,
+    pageCount = 0
+  } = store.state.pagination.stargazersByRepo[fullName] || {}
+
+  if (pageCount > 0 && !nextPage) {
+    return null
+  }
+
+  return api(store, fetchStargazers(fullName, nextPageUrl))
+}

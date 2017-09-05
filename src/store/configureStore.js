@@ -14,7 +14,8 @@ const initState = {
   },
   pagination: {
     starredByUser: {}
-  }
+  },
+  errorMessage: ''
 }
 
 const configureStore = (preloadedState = initState) => {
