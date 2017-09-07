@@ -13,7 +13,8 @@ const initState = {
     repos: {}
   },
   pagination: {
-    starredByUser: {}
+    starredByUser: {},
+    stargazersByRepo: {}
   },
   errorMessage: ''
 }

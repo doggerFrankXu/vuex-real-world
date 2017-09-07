@@ -2,7 +2,7 @@ import union from 'lodash/union'
 import merge from 'lodash/merge'
 import fromPairs from 'lodash/fromPairs'
 import Vue from 'vue'
-const paginate = ({types, mapPayloadToKey}) => {
+const paginate = ({stateKey, types, mapPayloadToKey}) => {
   if (!Array.isArray(types) || types.length !== 3) {
     throw new Error('Expected types to be an array of three elements.')
   }
@@ -14,8 +14,8 @@ const paginate = ({types, mapPayloadToKey}) => {
   }
   const [ requestType, successType, failureType ] = types
 
-  // todo not update whole subStarredByUserState
-  const updatePagination = (subStarredByUserState = {
+  // todo not update whole paginationRecord
+  const updatePagination = (paginationRecord = {
     isFetching: false,
     nextPageUrl: undefined,
     pageCount: 0,
@@ -24,30 +24,31 @@ const paginate = ({types, mapPayloadToKey}) => {
     switch (type) {
       case requestType:
         return {
-          ...subStarredByUserState,
+          ...paginationRecord,
           isFetching: true
         }
       case successType:
         return {
-          ...subStarredByUserState,
+          ...paginationRecord,
           isFetching: false,
-          ids: union(subStarredByUserState.ids, payload.response.result),
+          ids: union(paginationRecord.ids, payload.response.result),
           nextPageUrl: payload.response.nextPageUrl,
-          pageCount: subStarredByUserState.pageCount + 1
+          pageCount: paginationRecord.pageCount + 1
         }
       case failureType:
         return {
-          ...subStarredByUserState,
+          ...paginationRecord,
           isFetching: false
         }
       default:
-        return subStarredByUserState
+        return paginationRecord
     }
   }
 
   const mutationGenerator = type => {
     return (state, payload) => {
-      let starredByUserState = state.pagination.starredByUser
+      // one type collection of pagination, like starredByUser collection
+      let paginationSubState = state.pagination[stateKey]
 
       const key = mapPayloadToKey(payload)
       if (typeof key !== 'string') {
@@ -57,7 +58,7 @@ const paginate = ({types, mapPayloadToKey}) => {
       if (payload.response && payload.response.entities) {
         state.entities = merge({}, state.entities, payload.response.entities)
       }
-      Vue.set(starredByUserState, key, updatePagination(starredByUserState[key], payload, type))
+      Vue.set(paginationSubState, key, updatePagination(paginationSubState[key], payload, type))
     }
   }
 
