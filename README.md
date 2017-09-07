@@ -1,6 +1,6 @@
-# vue-real-world
+# vuex-real-world
 
-> a vue version for redux real world app
+> a vuex version for redux real world app
 
 ## Build Setup
 
