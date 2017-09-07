@@ -47,10 +47,7 @@ export default {
       'loadStarred'
     ]),
     loadData ({ login, loadUser, loadStarred }) {
-      // loadUser(login, [ 'name' ])
-      // loadStarred(login)
-
-      loadUser(login)
+      loadUser([login, [ 'name' ]])
       loadStarred([login])
     },
     handleLoadMoreClick () {

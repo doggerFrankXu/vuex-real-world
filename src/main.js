@@ -3,11 +3,13 @@
 import Vue from 'vue'
 import App from './containers/App.vue'
 import router from './router'
+import { sync } from 'vuex-router-sync'
 import configureStore from './store/configureStore'
 
 Vue.config.productionTip = false
 
 const store = configureStore()
+sync(store, router)
 
 /* eslint-disable no-new */
 new Vue({

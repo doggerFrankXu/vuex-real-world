@@ -13,10 +13,10 @@ const fetchUser = login => ({
 
 // Fetches a single user from Github API unless it is cached.
 // Relies on the custom API action 'interpreter' defined in ./api.js.
-export const loadUser = (store, login) => {
+export const loadUser = (store, [login, requiredFields = []]) => {
   const { state } = store
   const user = state.entities.users[login]
-  if (user) {
+  if (user && requiredFields.every(key => user.hasOwnProperty(key))) {
     return null
   }
 

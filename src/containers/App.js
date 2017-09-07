@@ -2,9 +2,9 @@ import Explore from '@/components/Explore.vue'
 export default {
   name: 'app',
   components: { Explore },
-  data () {
-    return {
-      inputValue: ''
+  computed: {
+    inputValue () {
+      return this.$store.state.route.path.substring(1)
     }
   },
   methods: {
