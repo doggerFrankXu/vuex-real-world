@@ -6,6 +6,7 @@ import Repo from '@/components/Repo.vue'
 const loadData = vm => {
   const { fullName } = vm
   vm.loadRepo([fullName, ['description']])
+  vm.loadStargazers([fullName])
 }
 
 export default {
@@ -39,11 +40,35 @@ export default {
     },
     owner () {
       return this.$store.state.entities.users[this.login]
+    },
+    stargazers () {
+      return this.mapStateToProps().stargazers
+    },
+    stargazersPagination () {
+      return this.mapStateToProps().stargazersPagination
     }
   },
   methods: {
     ...mapActions([
-      'loadRepo'
-    ])
+      'loadRepo',
+      'loadStargazers'
+    ]),
+    handleLoadMoreClick () {
+      this.loadStargazers([this.fullName, true])
+    },
+    mapStateToProps () {
+      const {
+        pagination: { stargazersByRepo },
+        entities: { users }
+      } = this.$store.state
+
+      const stargazersPagination = stargazersByRepo[this.fullName] || { ids: [] }
+      const stargazers = stargazersPagination.ids.map(id => users[id])
+
+      return {
+        stargazers,
+        stargazersPagination
+      }
+    }
   }
 }
