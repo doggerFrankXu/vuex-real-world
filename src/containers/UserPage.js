@@ -12,25 +12,24 @@ export default {
     Repo
   },
   computed: {
-    ...mapState({
-      starredPagination (state) {
-        return state.pagination.starredByUser[this.login]
-      },
-      items (state) {
-        const {
-          entities: { users, repos }
-        } = state
-        const starredRepos = this.starredPagination.ids.map(id => repos[id])
-        const starredRepoOwners = starredRepos.map(repo => users[repo.owner])
-
-        return zip(starredRepos, starredRepoOwners)
-      }
-    }),
     user () {
       return this.$store.getters.user(this.login)
     },
     login () {
+      // We need to lower case the login due to the way GitHub's API behaves.
+      // Have a look at ../middleware/api.js for more details.
       return this.$route.params.login.toLowerCase()
+    },
+    items () {
+      const {
+        starredRepos,
+        starredRepoOwners
+      } = this.mapStateToProps()
+
+      return zip(starredRepos, starredRepoOwners)
+    },
+    starredPagination () {
+      return this.mapStateToProps().starredPagination
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -56,7 +55,22 @@ export default {
     },
     handleLoadMoreClick () {
       this.loadStarred([this.login, true])
+    },
+    mapStateToProps () {
+      const {
+        pagination: { starredByUser },
+        entities: { users, repos }
+      } = this.$store.state
+
+      const starredPagination = starredByUser[this.login] || { ids: [] }
+      const starredRepos = starredPagination.ids.map(id => repos[id])
+      const starredRepoOwners = starredRepos.map(repo => users[repo.owner])
+
+      return {
+        starredRepos,
+        starredRepoOwners,
+        starredPagination
+      }
     }
   }
 }
-

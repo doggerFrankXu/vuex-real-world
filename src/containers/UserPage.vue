@@ -10,7 +10,7 @@
       <hr />
       <list :items="items"
         :on-load-more-click="handleLoadMoreClick"
-        :loading-label="`Loading ${login}'s starred...'`"
+        :loading-label="`Loading ${login}'s starred...`"
         :is-fetching="starredPagination.isFetching"
         :page-count="starredPagination.pageCount"
         :nextPageUrl="starredPagination.nextPageUrl"

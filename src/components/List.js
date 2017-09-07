@@ -3,7 +3,8 @@ export default {
   props: {
     loadingLabel: {
       default: 'Loading',
-      type: String
+      type: String,
+      required: true
     },
     pageCount: Number,
     items: {
@@ -11,6 +12,7 @@ export default {
       required: true
     },
     isFetching: {
+      default: true,
       type: Boolean,
       required: true
     },
