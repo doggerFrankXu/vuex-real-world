@@ -4,7 +4,7 @@ import createLogger from './plugins/logger'
 import * as actions from './actions'
 import * as getters from './getters'
 import mutations from './mutations'
-
+import applyMiddleware from './simple-middleware/apply-middleware'
 const debug = process.env.NODE_ENV !== 'production'
 
 const initState = {
@@ -21,13 +21,13 @@ const initState = {
 
 const configureStore = (preloadedState = initState) => {
   Vue.use(Vuex)
-
+  const newMutations = applyMiddleware(mutations)
   const store = new Vuex.Store({
     state: preloadedState,
     strict: debug,
     actions,
     getters,
-    mutations,
+    mutations: newMutations,
     plugins: debug ? [createLogger()] : []
   })
 
